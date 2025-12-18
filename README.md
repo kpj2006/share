@@ -35,13 +35,18 @@ git clone https://github.com/AOSSIE-Org/SocialShareButton.git
 <div id="share-button"></div>
 
 <script>
-  new SocialShareButton({
-    container: '#share-button',
-    url: 'https://your-website.com',
-    title: 'Check this out!'
+  // Ensure DOM is ready
+  document.addEventListener('DOMContentLoaded', function() {
+    new SocialShareButton({
+      container: '#share-button',
+      url: 'https://your-website.com',
+      title: 'Check this out!'
+    });
   });
 </script>
 ```
+
+**Note:** Always wrap initialization in `DOMContentLoaded` to ensure the container element exists.
 
 ### React
 

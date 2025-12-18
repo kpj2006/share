@@ -357,12 +357,14 @@ function App() {
 
   <script src="src/social-share-button.js"></script>
   <script>
-    const demoUrl = 'https://github.com/AOSSIE-Org/SocialShareButton';
-    const demoTitle = 'SocialShareButton - Awesome Social Sharing Component!';
-    const demoDescription = 'A lightweight, customizable social sharing component for modern web applications';
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', function() {
+      const demoUrl = 'https://github.com/AOSSIE-Org/SocialShareButton';
+      const demoTitle = 'SocialShareButton - Awesome Social Sharing Component!';
+      const demoDescription = 'A lightweight, customizable social sharing component for modern web applications';
 
-    // Default
-    new SocialShareButton({
+      // Default
+      new SocialShareButton({
       container: '#demo-default',
       url: demoUrl,
       title: demoTitle,
@@ -431,6 +433,7 @@ function App() {
       title: demoTitle,
       platforms: ['whatsapp', 'telegram'],
       buttonText: 'Share'
+    });
     });
   </script>
 </body>
