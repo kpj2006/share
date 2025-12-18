@@ -23,36 +23,11 @@ A lightweight social sharing component for web applications. Zero dependencies, 
 
 ## Quick Start
 
-### Vanilla JavaScript
-
-**Complete Example:**
-```html
-<!DOCTYPE html>
-<html>
-<head>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.css">
-</head>
-<body>
-  <div id="share-button"></div>
-
-  <script src="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      new SocialShareButton({
-        container: '#share-button'
-        // url and title auto-detected from current page
-      });
-    });
-  </script>
-</body>
-</html>
-```
-
 ### React Integration
 
 **Option 1: Simple CDN Approach (No File Copying)**
 
-Just add the CDN links to `public/index.html` and use vanilla JS initialization:
+**Step 1:** Add CDN links to `public/index.html` (just the CDN links, nothing else):
 
 ```html
 <head>
@@ -64,7 +39,8 @@ Just add the CDN links to `public/index.html` and use vanilla JS initialization:
 </body>
 ```
 
-Then in your component:
+**Step 2:** In your React component (e.g., `MainLayout.jsx`, `Header.jsx`, or wherever you want the button):
+
 ```jsx
 import { useEffect } from 'react';
 
@@ -77,6 +53,9 @@ function MyComponent() {
 
   return <div id="share-button"></div>;
 }
+```
+
+**Important:** The `<div id="share-button"></div>` and initialization code go in your **React component JSX**, NOT in index.html. The index.html only needs the CDN links.
 ```
 
 **Option 2: React Component Wrapper (Optional)**
@@ -95,6 +74,25 @@ function App() {
 - Use current page URL (`window.location.href`)
 - Use current page title (`document.title`)
 - Update when navigating between routes
+
+### Via npm
+
+For production apps, install via npm:
+
+```bash
+npm install social-share-button-aossie
+```
+
+Then import in your project:
+
+```javascript
+import SocialShareButton from 'social-share-button-aossie';
+import 'social-share-button-aossie/src/social-share-button.css';
+
+new SocialShareButton({
+  container: '#share-button'
+});
+```
 
 ## Configuration
 
