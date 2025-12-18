@@ -25,9 +25,11 @@ A lightweight social sharing component for web applications. Zero dependencies, 
 
 ### React Integration
 
-**Option 1: Simple CDN Approach (No File Copying)**
+**Option 1: Simple CDN Approach (Recommended - No Files to Create)**
 
-**Step 1:** Add CDN links to `public/index.html` (just the CDN links, nothing else):
+> ⚠️ **Important:** This option requires ZERO file creation. Do NOT create any `.jsx` or `.js` files. Just use existing components.
+
+**Step 1:** Add CDN links to `public/index.html` (just these two lines):
 
 ```html
 <head>
@@ -39,31 +41,46 @@ A lightweight social sharing component for web applications. Zero dependencies, 
 </body>
 ```
 
-**Step 2:** In your React component (e.g., `MainLayout.jsx`, `Header.jsx`, or wherever you want the button):
+**Step 2:** In your **existing**  React component (e.g., `MainLayout.jsx`, `Header.jsx`, or wherever you want the button):
 
 ```jsx
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 function MyComponent() {
+  const shareButtonInitialized = useRef(false);
+
   useEffect(() => {
-    new window.SocialShareButton({
-      container: '#share-button'
-    });
+    if (!shareButtonInitialized.current) {
+      new window.SocialShareButton({
+        container: '#share-button'
+      });
+      shareButtonInitialized.current = true;
+    }
   }, []);
 
-  return <div id="share-button"></div>;
+  return (
+    <div>
+      {/* Your existing header code */}
+      <div id="share-button"></div>  {/* Add this single line where you want the button */}
+    </div>
+  );
 }
 ```
 
-**Important:** The `<div id="share-button"></div>` and initialization code go in your **React component JSX**, NOT in index.html. The index.html only needs the CDN links.
-```
+**That's it!** No new files. No copying. Just CDN + one `<div>` tag.
 
-**Option 2: React Component Wrapper (Optional)**
+> 💡 **Note:** The `useRef` prevents creating duplicate buttons when the component re-renders (important for Next.js strict mode or hot reloading).
 
-For cleaner React integration, copy `src/social-share-button-react.jsx` to your project and use it as a React component:
+---
+
+**Option 2: React Component Wrapper (Advanced - Optional)**
+
+> 📝 Only use this if you want a dedicated component file for cleaner code organization.
+
+Copy `src/social-share-button-react.jsx` from this repo to your project and use it:
 
 ```jsx
-import { SocialShareButton } from './components/atoms/SocialShareButton/SocialShareButton';
+import { SocialShareButton } from './components/SocialShareButton';
 
 function App() {
   return <SocialShareButton />;
@@ -193,6 +210,86 @@ Supported: `whatsapp`, `facebook`, `twitter`, `linkedin`, `telegram`, `reddit`, 
 ## Demo
 
 Open `index.html` in your browser to see all features in action.
+
+## Troubleshooting
+
+### Multiple Share Buttons Appearing
+
+**Problem:** Share button duplicates on component re-render (Next.js strict mode, hot reload)
+
+**Cause:** `useEffect` runs multiple times creating multiple instances
+
+**Solution:** Use `useRef` to track initialization (already included in Option 1 code above)
+
+### Button Not Appearing
+
+**Problem:** Share button doesn't render
+
+**Cause:** Script loads after React renders the component
+
+**Solution:** Ensure CDN script is in `index.html` **before** `</body>` tag, or add null check:
+```jsx
+useEffect(() => {
+  if (window.SocialShareButton) {
+    new window.SocialShareButton({ container: '#share-button' });
+  }
+}, []);
+```
+
+### Modal Not Opening
+
+**Problem:** Clicking button does nothing
+
+**Cause:** CSS file not loaded or container ID mismatch
+
+**Solution:** 
+- Verify CSS CDN link is in `<head>`
+- Ensure `container: '#share-button'` matches your `<div id="share-button">`
+
+### URL Not Updating on Route Change
+
+**Problem:** Share button shows old URL after navigation (SPA)
+
+**Cause:** Component initialized once, doesn't track route changes
+
+**Solution:** Update URL manually on route change:
+```jsx
+const shareButton = useRef(null);
+
+useEffect(() => {
+  shareButton.current = new window.SocialShareButton({ container: '#share-button' });
+}, []);
+
+useEffect(() => {
+  if (shareButton.current) {
+    shareButton.current.updateOptions({ url: window.location.href });
+  }
+}, [pathname]); // pathname from router
+```
+
+### TypeError: SocialShareButton is not a constructor
+
+**Problem:** `Uncaught TypeError: window.SocialShareButton is not a constructor`
+
+**Cause:** CDN script not loaded yet or blocked by ad blocker
+
+**Solution:** Add fallback check or use `onLoad` event:
+```jsx
+useEffect(() => {
+  const loadButton = () => {
+    if (window.SocialShareButton) {
+      new window.SocialShareButton({ container: '#share-button' });
+    }
+  };
+  
+  if (document.readyState === 'complete') {
+    loadButton();
+  } else {
+    window.addEventListener('load', loadButton);
+    return () => window.removeEventListener('load', loadButton);
+  }
+}, []);
+```
 
 ## Contributing
 
