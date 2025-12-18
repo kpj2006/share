@@ -152,17 +152,29 @@ class SocialShareButton {
     const encodedDesc = encodeURIComponent(description);
     const hashtagString = hashtags.join(',');
     
-    const shareMessage = `${title}${description ? ' - ' + description : ''}`;
-    const encodedMessage = encodeURIComponent(shareMessage);
+    // Exciting share messages for different platforms
+    const whatsappMessage = `🚀 ${title}${description ? '\n\n' + description : ''}\n\n👉 Check it out:`;
+    const facebookMessage = `${title}${description ? ' - ' + description : ''}`;
+    const twitterMessage = `${title}${description ? '\n\n' + description : ''}`;
+    const telegramMessage = `📢 ${title}${description ? '\n\n' + description : ''}\n\n🔗 Read more:`;
+    const redditTitle = `${title}${description ? ' - ' + description : ''}`;
+    const emailBody = `Hey! 👋\n\nI thought you might find this interesting:\n\n${title}${description ? '\n\n' + description : ''}\n\nCheck it out here:`;
+    
+    const encodedWhatsapp = encodeURIComponent(whatsappMessage);
+    const encodedFacebook = encodeURIComponent(facebookMessage);
+    const encodedTwitter = encodeURIComponent(twitterMessage);
+    const encodedTelegram = encodeURIComponent(telegramMessage);
+    const encodedReddit = encodeURIComponent(redditTitle);
+    const encodedEmail = encodeURIComponent(emailBody);
 
     const urls = {
-      whatsapp: `https://wa.me/?text=${encodedMessage}%20${encodedUrl}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedMessage}`,
-      twitter: `https://twitter.com/intent/tweet?text=${encodedMessage}&url=${encodedUrl}${via ? '&via=' + via : ''}${hashtags.length ? '&hashtags=' + hashtagString : ''}`,
+      whatsapp: `https://wa.me/?text=${encodedWhatsapp}%20${encodedUrl}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedFacebook}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encodedTwitter}&url=${encodedUrl}${via ? '&via=' + via : ''}${hashtags.length ? '&hashtags=' + hashtagString : ''}`,
       linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-      telegram: `https://t.me/share/url?url=${encodedUrl}&text=${encodedMessage}`,
-      reddit: `https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
-      email: `mailto:?subject=${encodedTitle}&body=${encodedMessage}%20${encodedUrl}`
+      telegram: `https://t.me/share/url?url=${encodedUrl}&text=${encodedTelegram}`,
+      reddit: `https://reddit.com/submit?url=${encodedUrl}&title=${encodedReddit}`,
+      email: `mailto:?subject=${encodedTitle}&body=${encodedEmail}%20${encodedUrl}`
     };
 
     return urls[platform] || '';
