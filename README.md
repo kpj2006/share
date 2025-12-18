@@ -14,26 +14,30 @@ A lightweight social sharing component for web applications. Zero dependencies, 
 
 ## Installation
 
-### Via CDN (Recommended)
+### Via CDN
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.css">
 <script src="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.js"></script>
 ```
 
-### Clone Repository
-
-```bash
-git clone https://github.com/AOSSIE-Org/SocialShareButton.git
-```
-
 ## Quick Start
 
 ### Vanilla JavaScript
 
+**Step 1:** Add the container div in your HTML:
 ```html
 <div id="share-button"></div>
+```
 
+**Step 2:** Include the CSS and JS files:
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.css">
+<script src="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.js"></script>
+```
+
+**Step 3:** Initialize the component:
+```html
 <script>
   // Ensure DOM is ready
   document.addEventListener('DOMContentLoaded', function() {
@@ -44,6 +48,30 @@ git clone https://github.com/AOSSIE-Org/SocialShareButton.git
     });
   });
 </script>
+```
+
+**Complete Example:**
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.css">
+</head>
+<body>
+  <div id="share-button"></div>
+
+  <script src="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      new SocialShareButton({
+        container: '#share-button',
+        url: 'https://your-website.com',
+        title: 'Check this out!'
+      });
+    });
+  </script>
+</body>
+</html>
 ```
 
 **Note:** Always wrap initialization in `DOMContentLoaded` to ensure the container element exists.
@@ -62,6 +90,9 @@ function App() {
     />
   );
 }
+```
+
+**Auto URL Detection:** If you omit `url` and `title` props, the component automatically uses `window.location.href` and `document.title`, and updates when they change (perfect for SPAs with routing).
 ```
 
 ## Configuration

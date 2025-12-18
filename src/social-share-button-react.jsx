@@ -1,9 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import '../src/social-share-button.css';
 
 export const SocialShareButton = ({
-  url = window.location.href,
-  title = document.title,
+  url,
+  title,
   description = '',
   hashtags = [],
   via = '',
@@ -19,14 +18,17 @@ export const SocialShareButton = ({
   const containerRef = useRef(null);
   const shareButtonRef = useRef(null);
 
+  // Auto-detect current URL and title if not provided
+  const currentUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
+  const currentTitle = title || (typeof document !== 'undefined' ? document.title : '');
+
   useEffect(() => {
     if (containerRef.current && !shareButtonRef.current) {
-      // Import the SocialShareButton class
       if (typeof window !== 'undefined' && window.SocialShareButton) {
         shareButtonRef.current = new window.SocialShareButton({
           container: containerRef.current,
-          url,
-          title,
+          url: currentUrl,
+          title: currentTitle,
           description,
           hashtags,
           via,
@@ -50,12 +52,12 @@ export const SocialShareButton = ({
     };
   }, []);
 
-  // Update options when props change
+  // Update options when props change (including URL from route changes)
   useEffect(() => {
     if (shareButtonRef.current) {
       shareButtonRef.current.updateOptions({
-        url,
-        title,
+        url: currentUrl,
+        title: currentTitle,
         description,
         hashtags,
         via,
@@ -69,7 +71,7 @@ export const SocialShareButton = ({
         modalPosition
       });
     }
-  }, [url, title, description, hashtags, via, platforms, theme, buttonText, customClass, onShare, onCopy, buttonStyle, modalPosition]);
+  }, [currentUrl, currentTitle, description, hashtags, via, platforms, theme, buttonText, customClass, onShare, onCopy, buttonStyle, modalPosition]);
 
   return <div ref={containerRef}></div>;
 };
