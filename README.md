@@ -17,8 +17,8 @@ A lightweight social sharing component for web applications. Zero dependencies, 
 ### Via CDN (Recommended)
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/AOSSIE-Org/SocialShareButton@main/src/social-share-button.css">
-<script src="https://cdn.jsdelivr.net/gh/AOSSIE-Org/SocialShareButton@main/src/social-share-button.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.css">
+<script src="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.js"></script>
 ```
 
 ### Clone Repository
