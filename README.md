@@ -6,10 +6,10 @@ A lightweight social sharing component for web applications. Zero dependencies, 
 
 - Multiple social platforms (WhatsApp, Facebook, X, LinkedIn, Telegram, Reddit, Email)
 - Zero dependencies - pure vanilla JavaScript
-- Framework agnostic - works with React, Vue, Angular, or plain HTML
+- Works with React, Vue, Angular, or plain HTML
+- Auto-detects current URL and page title
 - Fully responsive and mobile-ready
 - Customizable themes (dark/light)
-- Accessible (keyboard navigation, ARIA labels)
 - Lightweight (< 10KB gzipped)
 
 ## Installation
@@ -25,31 +25,6 @@ A lightweight social sharing component for web applications. Zero dependencies, 
 
 ### Vanilla JavaScript
 
-**Step 1:** Add the container div in your HTML:
-```html
-<div id="share-button"></div>
-```
-
-**Step 2:** Include the CSS and JS files:
-```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.css">
-<script src="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.js"></script>
-```
-
-**Step 3:** Initialize the component:
-```html
-<script>
-  // Ensure DOM is ready
-  document.addEventListener('DOMContentLoaded', function() {
-    new SocialShareButton({
-      container: '#share-button',
-      url: 'https://your-website.com',
-      title: 'Check this out!'
-    });
-  });
-</script>
-```
-
 **Complete Example:**
 ```html
 <!DOCTYPE html>
@@ -64,9 +39,8 @@ A lightweight social sharing component for web applications. Zero dependencies, 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       new SocialShareButton({
-        container: '#share-button',
-        url: 'https://your-website.com',
-        title: 'Check this out!'
+        container: '#share-button'
+        // url and title auto-detected from current page
       });
     });
   </script>
@@ -74,83 +48,153 @@ A lightweight social sharing component for web applications. Zero dependencies, 
 </html>
 ```
 
-**Note:** Always wrap initialization in `DOMContentLoaded` to ensure the container element exists.
+### React Integration
 
-### React
+**Option 1: Simple CDN Approach (No File Copying)**
 
+Just add the CDN links to `public/index.html` and use vanilla JS initialization:
+
+```html
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.css">
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://cdn.jsdelivr.net/gh/kpj2006/share@v1.0.0/src/social-share-button.js"></script>
+</body>
+```
+
+Then in your component:
 ```jsx
-import { SocialShareButton } from './src/social-share-button-react';
+import { useEffect } from 'react';
 
-function App() {
-  return (
-    <SocialShareButton
-      url="https://your-website.com"
-      title="Check this out!"
-      onShare={(platform) => console.log('Shared on:', platform)}
-    />
-  );
+function MyComponent() {
+  useEffect(() => {
+    new window.SocialShareButton({
+      container: '#share-button'
+    });
+  }, []);
+
+  return <div id="share-button"></div>;
 }
 ```
 
-**Auto URL Detection:** If you omit `url` and `title` props, the component automatically uses `window.location.href` and `document.title`, and updates when they change (perfect for SPAs with routing).
+**Option 2: React Component Wrapper (Optional)**
+
+For cleaner React integration, copy `src/social-share-button-react.jsx` to your project and use it as a React component:
+
+```jsx
+import { SocialShareButton } from './components/atoms/SocialShareButton/SocialShareButton';
+
+function App() {
+  return <SocialShareButton />;
+}
 ```
 
+**Both options automatically:**
+- Use current page URL (`window.location.href`)
+- Use current page title (`document.title`)
+- Update when navigating between routes
+
 ## Configuration
+
+### Basic Options
+
+```jsx
+<SocialShareButton
+  url="https://custom-url.com"           // Optional: defaults to current URL
+  title="Custom Title"                    // Optional: defaults to page title
+  buttonStyle="primary"                   // default | primary | compact | icon-only
+  theme="dark"                            // dark | light
+/>
+```
+
+### Available Platforms
+
+```jsx
+<SocialShareButton
+  platforms={['twitter', 'linkedin', 'facebook']}
+/>
+```
+
+Supported: `whatsapp`, `facebook`, `twitter`, `linkedin`, `telegram`, `reddit`, `email`
+
+### Button Styles
+
+```jsx
+// Default style
+<SocialShareButton buttonStyle="default" />
+
+// Primary gradient
+<SocialShareButton buttonStyle="primary" />
+
+// Compact size
+<SocialShareButton buttonStyle="compact" />
+
+// Icon only (no text)
+<SocialShareButton buttonStyle="icon-only" />
+```
+
+### Callbacks
+
+```jsx
+<SocialShareButton
+  onShare={(platform, url) => {
+    console.log(`Shared on ${platform}: ${url}`);
+  }}
+  onCopy={(url) => {
+    console.log('Link copied:', url);
+  }}
+/>
+```
+
+### Complete Options
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `url` | string | `window.location.href` | URL to share |
 | `title` | string | `document.title` | Title of content |
 | `description` | string | `''` | Description text |
-| `platforms` | array | `['whatsapp', 'facebook', 'twitter', 'linkedin', 'telegram', 'reddit']` | Platforms to show |
-| `theme` | string | `'dark'` | Theme (`'dark'` or `'light'`) |
+| `platforms` | array | All platforms | Platforms to show |
+| `theme` | string | `'dark'` | `'dark'` or `'light'` |
 | `buttonText` | string | `'Share'` | Button text |
-| `buttonStyle` | string | `'default'` | Style variant |
+| `buttonStyle` | string | `'default'` | Button style variant |
+| `onShare` | function | `null` | Share callback |
+| `onCopy` | function | `null` | Copy callback |
 
-## Customization
+## Examples
 
-### Button Styles
+### Mobile Menu Integration
 
-```javascript
-// Primary style
-new SocialShareButton({
-  container: '#share',
-  buttonStyle: 'primary'
-});
-
-// Icon only
-new SocialShareButton({
-  container: '#share',
-  buttonStyle: 'icon-only'
-});
+```jsx
+<nav>
+  <SocialShareButton buttonStyle="icon-only" />
+</nav>
 ```
 
-### Platform Selection
+### Custom Platform Selection
 
-```javascript
-new SocialShareButton({
-  container: '#share',
-  platforms: ['twitter', 'linkedin', 'facebook']
-});
+```jsx
+// Professional networks only
+<SocialShareButton platforms={['linkedin', 'twitter', 'email']} />
+
+// Messaging apps only  
+<SocialShareButton platforms={['whatsapp', 'telegram']} />
 ```
 
-### Callbacks
+### Custom URL & Title
 
-```javascript
-new SocialShareButton({
-  container: '#share',
-  onShare: (platform, url) => {
-    console.log(`Shared on ${platform}`);
-  },
-  onCopy: (url) => {
-    console.log('Link copied');
-  }
-});
+```jsx
+<SocialShareButton
+  url="https://my-article.com/post/123"
+  title="Amazing Article Title"
+  description="Read this awesome content!"
+/>
 ```
 
 ## Demo
 
-Open `index.html` in your browser to see the component in action.
+Open `index.html` in your browser to see all features in action.
 
 ## Contributing
 
