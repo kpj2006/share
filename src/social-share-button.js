@@ -153,12 +153,12 @@ class SocialShareButton {
     const hashtagString = hashtags.join(',');
     
     // Exciting share messages for different platforms
-    const whatsappMessage = `🚀 ${title}${description ? '\n\n' + description : ''}\n\n👉 Check it out:`;
-    const facebookMessage = `${title}${description ? ' - ' + description : ''}`;
-    const twitterMessage = `${title}${description ? '\n\n' + description : ''}`;
-    const telegramMessage = `📢 ${title}${description ? '\n\n' + description : ''}\n\n🔗 Read more:`;
+    const whatsappMessage = `🚀 ${title}\n\nLive on the site 👀\nClean UI, smooth flow — worth peeking\n👇`;
+    const facebookMessage = `${title} 👀\nPretty clean project — worth a look\n👇`;
+    const twitterMessage = `${title} 👀\n\nClean build, no noise.\n👇`;
+    const telegramMessage = `🔗 ${title}\n\nLive + working\nClean stuff, take a look 👇`;
     const redditTitle = `${title}${description ? ' - ' + description : ''}`;
-    const emailBody = `Hey! 👋\n\nI thought you might find this interesting:\n\n${title}${description ? '\n\n' + description : ''}\n\nCheck it out here:`;
+    const emailBody = `Hey 👋\n\nSharing a clean project I came across:\n${title}\n\nLive, simple, and usable — take a look 👇`;
     
     const encodedWhatsapp = encodeURIComponent(whatsappMessage);
     const encodedFacebook = encodeURIComponent(facebookMessage);
