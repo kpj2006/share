@@ -1,4 +1,4 @@
-/**
+﻿/**
  * SocialShareButton - A lightweight, customizable social sharing component
  * @version 1.0.0
  * @license MIT
@@ -152,13 +152,13 @@ class SocialShareButton {
     const encodedDesc = encodeURIComponent(description);
     const hashtagString = hashtags.join(',');
     
-    // Exciting share messages for different platforms
-    const whatsappMessage = `🚀 ${title}\n\nLive on the site 👀\nClean UI, smooth flow — worth peeking\n👇`;
-    const facebookMessage = `${title} 👀\nPretty clean project — worth a look\n👇`;
-    const twitterMessage = `${title} 👀\n\nClean build, no noise.\n👇`;
-    const telegramMessage = `🔗 ${title}\n\nLive + working\nClean stuff, take a look 👇`;
+    // Exciting share messages for different platforms (using Unicode for emoji compatibility)
+    const whatsappMessage = `\u{1F680} ${title}\n\nLive on the site \u{1F440}\nClean UI, smooth flow \u{2014} worth peeking\n\u{1F447}`;
+    const facebookMessage = `${title} \u{1F440}\nPretty clean project \u{2014} worth a look\n\u{1F447}`;
+    const twitterMessage = `${title} \u{1F440}\n\nClean build, no noise.\n\u{1F447}`;
+    const telegramMessage = `\u{1F517} ${title}\n\nLive + working\nClean stuff, take a look \u{1F447}`;
     const redditTitle = `${title}${description ? ' - ' + description : ''}`;
-    const emailBody = `Hey 👋\n\nSharing a clean project I came across:\n${title}\n\nLive, simple, and usable — take a look 👇`;
+    const emailBody = `Hey \u{1F44B}\n\nSharing a clean project I came across:\n${title}\n\nLive, simple, and usable \u{2014} take a look \u{1F447}`;
     
     const encodedWhatsapp = encodeURIComponent(whatsappMessage);
     const encodedFacebook = encodeURIComponent(facebookMessage);
